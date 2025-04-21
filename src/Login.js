@@ -35,7 +35,7 @@ const Login = () => {
   const handleLogin = () => {
     if (!emailError && !passwordError) {
       console.log("Login with", email, password)
-      // TODO: gọi API đăng nhập hoặc điều hướng
+  
     }
   }
 

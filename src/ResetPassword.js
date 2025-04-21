@@ -1,4 +1,3 @@
-// ResetPassword.tsx
 "use client"
 
 import React, { useState } from "react"
@@ -23,7 +22,6 @@ const ResetPassword = () => {
   const handleReset = () => {
     if (!checkEmail()) {
       console.log("Send reset email to:", email)
-      // TODO: Gửi email reset mật khẩu
     }
   }
 
