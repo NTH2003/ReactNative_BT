@@ -2,16 +2,16 @@
 
 import React, { useState } from "react"
 import {
-  View,
-  StyleSheet,
-  KeyboardAvoidingView,
-  Platform,
-  ScrollView,
-  TouchableOpacity,
+    View,
+    StyleSheet,
+    KeyboardAvoidingView,
+    Platform,
+    ScrollView,
+    TouchableOpacity,
 } from "react-native"
 import { Text, TextInput, Button, HelperText } from "react-native-paper"
 
-const CreateNewAccount = () => {
+const CreateNewAccount = ({ navigation }) => {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [confirmPassword, setConfirmPassword] = useState("")
@@ -34,7 +34,6 @@ const CreateNewAccount = () => {
   const handleSignup = () => {
     if (!checkEmail() && !checkPassword() && !checkConfirmPassword()) {
       console.log("Create account with", email, password)
-      // TODO: Gửi yêu cầu tạo tài khoản
     }
   }
 
@@ -102,9 +101,10 @@ const CreateNewAccount = () => {
           Signup
         </Button>
 
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate("Login")}>
           <Text style={styles.link}>Already have an account?</Text>
         </TouchableOpacity>
+
       </ScrollView>
     </KeyboardAvoidingView>
   )

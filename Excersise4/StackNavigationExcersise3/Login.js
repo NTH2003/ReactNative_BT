@@ -12,7 +12,7 @@ import {
 } from "react-native"
 import { HelperText, Text, TextInput, Button } from "react-native-paper"
 
-const Login = () => {
+const Login = ({ navigation }) => {
   const [email, setEmail] = useState("2124802010269@student.tdmu.edu.vn")
   const [password, setPassword] = useState("123")
   const [showPassword, setShowPassword] = useState(false)
@@ -43,7 +43,7 @@ const Login = () => {
     <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollContainer} keyboardShouldPersistTaps="handled">
         <View style={styles.logoContainer}>
-          <Image source={require("../images/logo.png")} style={styles.logo} resizeMode="contain" />
+          <Image source={require("../../images/logo.png")} style={styles.logo} resizeMode="contain" />
         </View>
 
         <Text style={styles.welcomeText}>Welcome back!</Text>
@@ -102,13 +102,19 @@ const Login = () => {
           Login
         </Button>
 
-        <TouchableOpacity style={styles.createAccountButton}>
+        <TouchableOpacity style={styles.createAccountButton}
+        onPress={() => navigation.navigate("CreateNewAccount")}>
+          
           <Text style={styles.createAccountText}>Create a new account</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.forgotPasswordButton}>
+        <TouchableOpacity
+          style={styles.forgotPasswordButton}
+          onPress={() => navigation.navigate("ResetPassword")}
+        >
           <Text style={styles.forgotPasswordText}>Forgot Password</Text>
         </TouchableOpacity>
+
 
         <View style={styles.footer}>
           <Text style={styles.footerText}>

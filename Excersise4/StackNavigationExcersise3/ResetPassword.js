@@ -11,7 +11,7 @@ import {
 } from "react-native"
 import { Text, TextInput, Button, HelperText } from "react-native-paper"
 
-const ResetPassword = () => {
+const ResetPassword = ({ navigation }) => {
   const [email, setEmail] = useState("")
 
   const checkEmail = () => {
@@ -51,9 +51,10 @@ const ResetPassword = () => {
           Send Reset Email
         </Button>
 
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate("Login")}>
           <Text style={styles.link}>Go back to Login</Text>
         </TouchableOpacity>
+
       </ScrollView>
     </KeyboardAvoidingView>
   )
