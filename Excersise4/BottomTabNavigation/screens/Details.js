@@ -5,7 +5,7 @@ import { Text } from "react-native-paper";
 const Details = () => {
     return (
         <View style={styles.container}>
-        <Text>Details Screen</Text>
+            <Text>Details Screen</Text>
         </View>
     );
 };

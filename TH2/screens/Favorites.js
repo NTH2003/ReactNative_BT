@@ -1,8 +1,14 @@
 import React, { useEffect } from 'react';
-import { StyleSheet, Text, View, FlatList, ActivityIndicator } from 'react-native';
-import { useDispatch, useSelector } from 'react-redux';
+import {
+    StyleSheet,
+    Text,
+    View,
+    FlatList,
+    ActivityIndicator,
+} from 'react-native';
 import { fetchContacts } from '../utility/api';
-import ContactListItem from '../components/ContactListItem';
+import ContactThumbnail from '../components/ContactThumbnail';
+import { useDispatch, useSelector } from 'react-redux';
 import {
     fetchContactsLoading,
     fetchContactsSuccess,
@@ -11,7 +17,7 @@ import {
 
 const keyExtractor = ({ phone }) => phone;
 
-const Contacts = ({ navigation }) => {
+const Favorites = ({ navigation }) => {
     const dispatch = useDispatch();
     const { contacts, loading, error } = useSelector((state) => state.contacts);
 
@@ -26,15 +32,13 @@ const Contacts = ({ navigation }) => {
         });
     }, [dispatch]);
 
-    const contactsSorted = contacts.slice().sort((a, b) => a.name.localeCompare(b.name));
+    const favorites = contacts.filter((contact) => contact.favorite);
 
-    const renderContact = ({ item }) => {
-        const { name, avatar, phone } = item;
+    const renderFavoriteThumbnail = ({ item }) => {
+        const { avatar } = item;
         return (
-        <ContactListItem
-            name={name}
+        <ContactThumbnail
             avatar={avatar}
-            phone={phone}
             onPress={() => navigation.navigate('Profile', { contact: item })}
         />
         );
@@ -42,13 +46,15 @@ const Contacts = ({ navigation }) => {
 
     return (
         <View style={styles.container}>
-        {loading && <ActivityIndicator color="blue" size="large" />}
-        {error && <Text style={styles.errorText}>Đã có lỗi khi tải danh bạ.</Text>}
+        {loading && <ActivityIndicator size="large" />}
+        {error && <Text style={styles.errorText}>Đã có lỗi khi tải dữ liệu.</Text>}
         {!loading && !error && (
             <FlatList
-            data={contactsSorted}
+            data={favorites}
             keyExtractor={keyExtractor}
-            renderItem={renderContact}
+            numColumns={3}
+            contentContainerStyle={styles.list}
+            renderItem={renderFavoriteThumbnail}
             />
         )}
         </View>
@@ -60,7 +66,9 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
         justifyContent: 'center',
         flex: 1,
-        paddingTop: 10,
+    },
+    list: {
+        alignItems: 'center',
     },
     errorText: {
         textAlign: 'center',
@@ -69,4 +77,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default Contacts;
+export default Favorites;
