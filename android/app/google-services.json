@@ -1,13 +1,13 @@
 {
   "project_info": {
-    "project_number": "633933589843",
-    "project_id": "todosapp-b8548",
-    "storage_bucket": "todosapp-b8548.firebasestorage.app"
+    "project_number": "829108324891",
+    "project_id": "demoreactnative-1c077",
+    "storage_bucket": "demoreactnative-1c077.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:633933589843:android:309735e0edff093ab785a6",
+        "mobilesdk_app_id": "1:829108324891:android:be50760af65f3bf98706be",
         "android_client_info": {
           "package_name": "com.demoreactnative"
         }
@@ -15,7 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyCwf-ER7N0Ts2senja0VKxR7y4kgMOcQbk"
+          "current_key": "AIzaSyA8B6nUBldBOshhwEACBn7M3XL1pRKOMlE"
         }
       ],
       "services": {

@@ -9,7 +9,7 @@ const App = () => {
     const USERS = firestore().collection("USERS");
     const admin = {
         fullName: "Admin",
-        email: "vanhuudhsp@gmail.com",
+        email: "hau@gmail.com",
         password: "123456",
         phone: "0913131732",
         address: "Bình Dương",
@@ -31,7 +31,6 @@ const App = () => {
                             console.log("Add new account admin");
                         })
                         .catch(e => {
-                            // Nếu tài khoản đã tồn tại trên Auth, sẽ báo lỗi ở đây
                             console.log("Lỗi tạo tài khoản admin:", e.message);
                         });
                 }

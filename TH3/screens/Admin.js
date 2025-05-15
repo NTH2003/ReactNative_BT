@@ -1,6 +1,6 @@
 import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
 import RouterService from "../routers/RouterService";
-import Transaction from "./Transaction";
+import Transaction from "../screens/Transaction";
 import Setting from "./Setting";
 import Customers from "./Customers";
 

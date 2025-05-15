@@ -5,37 +5,49 @@ import firestore from "@react-native-firebase/firestore";
 import auth from "@react-native-firebase/auth";
 
 const Register = ({ navigation }) => {
-    const [fullName, setFullName] = useState("");
-    const [email, setEmail] = useState("");
+    const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [passwordConfirm, setPasswordConfirm] = useState("");
     const [hiddenPassword, setHiddenPassword] = useState(true);
-    const [hiddenPasswordConfirm, setHiddenPasswordConfirm] = useState(false);
-    const [address, setAddress] = useState("");
-    const [phone, setPhone] = useState("");
+    const [hiddenPasswordConfirm, setHiddenPasswordConfirm] = useState(true);
 
-    const hasErrorFullName = () => fullName === "";
-    const hasErrorEmail = () => !email.includes("@");
+    const hasErrorUsername = () => username === "";
     const hasErrorPassword = () => password.length < 6;
     const hasErrorPasswordConfirm = () => passwordConfirm !== password;
 
     const USERS = firestore().collection("USERS");
 
     const handleCreateAccount = () => {
-        auth()
-            .createUserWithEmailAndPassword(email, password)
-            .then(response => {
-                USERS.doc(email).set({
-                    fullName,
-                    email,
-                    password,
-                    phone,
-                    address,
-                    role: "customer"
-                });
-                navigation.navigate("Login");
+        // Check if username already exists
+        USERS.where("username", "==", username)
+            .get()
+            .then((querySnapshot) => {
+                if (!querySnapshot.empty) {
+                    Alert.alert("Tài khoản đã tồn tại", "Username này đã được đăng ký. Vui lòng sử dụng username khác.");
+                } else {
+                    // Create new account with email (using username as email)
+                    const email = `${username}@example.com`; // Using a dummy email domain
+                    auth()
+                        .createUserWithEmailAndPassword(email, password)
+                        .then(response => {
+                            USERS.doc(username).set({
+                                username,
+                                password,
+                                role: "customer"
+                            });
+                            Alert.alert("Thành công", "Đăng ký tài khoản thành công!");
+                            navigation.navigate("Login");
+                        })
+                        .catch(e => {
+                            console.error("Lỗi khi tạo tài khoản:", e.message);
+                            Alert.alert("Lỗi", e.message);
+                        });
+                }
             })
-            .catch(e => Alert.alert("Tài khoản tồn tại"));
+            .catch((error) => {
+                console.error("Lỗi khi kiểm tra username:", error.message);
+                Alert.alert("Lỗi", "Đã xảy ra lỗi khi kiểm tra username.");
+            });
     };
 
     return (
@@ -53,20 +65,12 @@ const Register = ({ navigation }) => {
                 Register New Account
             </Text>
             <TextInput
-                label="Full Name"
-                value={fullName}
-                onChangeText={setFullName}
+                label="Username"
+                value={username}
+                onChangeText={setUsername}
             />
-            <HelperText type="error" visible={hasErrorFullName()}>
-                Full name không được phép để trống
-            </HelperText>
-            <TextInput
-                label="Email"
-                value={email}
-                onChangeText={setEmail}
-            />
-            <HelperText type="error" visible={hasErrorEmail()}>
-                Địa chỉ email không hợp lệ
+            <HelperText type="error" visible={hasErrorUsername()}>
+                Username không được phép để trống
             </HelperText>
             <TextInput
                 label="Password"
@@ -98,22 +102,10 @@ const Register = ({ navigation }) => {
             <HelperText type="error" visible={hasErrorPasswordConfirm()}>
                 Confirm Password phải so khớp với password
             </HelperText>
-            <TextInput
-                label="Address"
-                value={address}
-                onChangeText={setAddress}
-                style={{ marginBottom: 20 }}
-            />
-            <TextInput
-                label="Phone"
-                value={phone}
-                onChangeText={setPhone}
-                style={{ marginBottom: 20 }}
-            />
-            <Button mode="contained" onPress={handleCreateAccount}>
+            <Button mode="contained" onPress={handleCreateAccount} style={{ marginTop: 20 }}>
                 Create New Account
             </Button>
-            <View style={{ flexDirection: "row", justifyContent: "center", alignItems: "center" }}>
+            <View style={{ flexDirection: "row", justifyContent: "center", alignItems: "center", marginTop: 20 }}>
                 <Text>Do you have an account ?</Text>
                 <Button onPress={() => navigation.navigate("Login")}>
                     Login Account
