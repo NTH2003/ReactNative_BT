@@ -1,11 +1,10 @@
 import React, { useState } from "react";
-import { View, StyleSheet, Alert } from "react-native";
-import { Text, TextInput, Button } from "react-native-paper";
+import { View, StyleSheet, Alert, Text, TextInput, TouchableOpacity } from "react-native";
 import firestore from "@react-native-firebase/firestore";
 
 const AddNewService = () => {
     const [serviceName, setServiceName] = useState("");
-    const [price, setPrice] = useState("");
+    const [price, setPrice] = useState("0");
 
     const formatInputPrice = (value) => {
         const numeric = value.replace(/\D/g, "");
@@ -30,7 +29,7 @@ const AddNewService = () => {
             });
             Alert.alert("Thành công", "Đã thêm dịch vụ mới!");
             setServiceName("");
-            setPrice("");
+            setPrice("0");
         } catch (error) {
             Alert.alert("Lỗi", error.message || "Không thể thêm dịch vụ!");
         }
@@ -38,54 +37,73 @@ const AddNewService = () => {
 
     return (
         <View style={styles.container}>
-            <Text variant="titleLarge" style={styles.title}>
-                Add New Service
-            </Text>
+            <View style={styles.formContainer}>
+                <Text style={styles.label}>Service name <Text style={styles.required}>*</Text></Text>
+                <TextInput
+                    value={serviceName}
+                    onChangeText={setServiceName}
+                    style={styles.input}
+                    placeholder="Input a service name"
+                    placeholderTextColor="#A0A0A0"
+                />
 
-            <TextInput
-                label="Service Name"
-                value={serviceName}
-                onChangeText={setServiceName}
-                mode="outlined"
-                style={styles.input}
-            />
+                <Text style={styles.label}>Price <Text style={styles.required}>*</Text></Text>
+                <TextInput
+                    value={price}
+                    onChangeText={handlePriceChange}
+                    style={styles.input}
+                    keyboardType="numeric"
+                />
 
-            <TextInput
-                label="Price"
-                value={price}
-                onChangeText={handlePriceChange}
-                mode="outlined"
-                keyboardType="numeric"
-                style={styles.input}
-            />
-
-            <Button
-                mode="contained"
-                onPress={handleAddService}
-                style={styles.button}
-            >
-                Add
-            </Button>
+                <TouchableOpacity
+                    style={styles.button}
+                    onPress={handleAddService}
+                    activeOpacity={0.8}
+                >
+                    <Text style={styles.buttonText}>Add</Text>
+                </TouchableOpacity>
+            </View>
         </View>
     );
 };
 
 const styles = StyleSheet.create({
     container: {
-        padding: 16,
         flex: 1,
         backgroundColor: "#fff",
-        justifyContent: "center",
+        padding: 16,
     },
-    title: {
-        marginBottom: 24,
-        textAlign: "center",
+    formContainer: {
+        width: "100%",
+    },
+    label: {
+        fontSize: 16,
+        fontWeight: "500",
+        marginBottom: 8,
+        color: "#333",
+    },
+    required: {
+        color: "#f05a77",
     },
     input: {
-        marginBottom: 16,
+        backgroundColor: "#F5F5F5",
+        borderRadius: 8,
+        padding: 12,
+        fontSize: 16,
+        marginBottom: 20,
+        color: "#333",
     },
     button: {
-        marginTop: 8,
+        backgroundColor: "#f05a77",
+        borderRadius: 8,
+        padding: 14,
+        alignItems: "center",
+        marginTop: 10,
+    },
+    buttonText: {
+        color: "white",
+        fontSize: 16,
+        fontWeight: "600",
     },
 });
 

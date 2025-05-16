@@ -1,6 +1,6 @@
 import { View, StyleSheet, Alert, Modal } from "react-native";
-import { Text, Button, TextInput } from "react-native-paper";
-import React, { useState } from "react";
+import { Text, Button, TextInput, Appbar, Menu } from "react-native-paper";
+import React, { useState, useEffect } from "react";
 import firestore from "@react-native-firebase/firestore";
 
 const formatDate = (timestamp) => {
@@ -21,6 +21,18 @@ const ServiceDetail = ({ route, navigation }) => {
     const [editName, setEditName] = useState(service?.name || "");
     const [editPrice, setEditPrice] = useState(service?.price ? service.price.toString() : "");
     const [loading, setLoading] = useState(false);
+    const [menuVisible, setMenuVisible] = useState(false);
+
+    useEffect(() => {
+        if (route.params?.showEditModal) {
+            setEditModal(true);
+            navigation.setParams({ showEditModal: false });
+        }
+        if (route.params?.confirmDelete) {
+            handleDelete();
+            navigation.setParams({ confirmDelete: false });
+        }
+    }, [route.params]);
 
     const handleDelete = async () => {
         Alert.alert(
@@ -66,49 +78,49 @@ const ServiceDetail = ({ route, navigation }) => {
         setLoading(false);
     };
 
+    const openMenu = () => setMenuVisible(true);
+    const closeMenu = () => setMenuVisible(false);
+
     return (
-        <View style={styles.container}>
-            <Text style={styles.label}><Text style={styles.bold}>Service name:</Text> {service?.name || ''}</Text>
-            <Text style={styles.label}><Text style={styles.bold}>Price:</Text> {formatPrice(service?.price)}</Text>
-            <Text style={styles.label}><Text style={styles.bold}>Creator:</Text> {service?.creator || 'Unknown'}</Text>
-            <Text style={styles.label}><Text style={styles.bold}>Time:</Text> {formatDate(service?.createdAt)}</Text>
-            <Text style={styles.label}><Text style={styles.bold}>Final update:</Text> {formatDate(service?.updatedAt || service?.createdAt)}</Text>
+        <>
+            <View style={styles.container}>
+                <Text style={styles.label}><Text style={styles.bold}>Service name:</Text> {service?.name || ''}</Text>
+                <Text style={styles.label}><Text style={styles.bold}>Price:</Text> {formatPrice(service?.price)}</Text>
+                <Text style={styles.label}><Text style={styles.bold}>Creator:</Text> {service?.creator || 'Unknown'}</Text>
+                <Text style={styles.label}><Text style={styles.bold}>Time:</Text> {formatDate(service?.createdAt)}</Text>
+                <Text style={styles.label}><Text style={styles.bold}>Final update:</Text> {formatDate(service?.updatedAt || service?.createdAt)}</Text>
 
-            <View style={{ flexDirection: 'row', marginTop: 32, justifyContent: 'space-between' }}>
-                <Button mode="contained" style={styles.editBtn} onPress={() => setEditModal(true)} loading={loading} disabled={loading}>Edit</Button>
-                <Button mode="contained" style={styles.deleteBtn} onPress={handleDelete} loading={loading} disabled={loading}>Delete</Button>
-            </View>
-
-            <Modal
-                visible={editModal}
-                transparent
-                animationType="slide"
-                onRequestClose={() => setEditModal(false)}
-            >
-                <View style={styles.modalBg}>
-                    <View style={styles.modalContent}>
-                        <Text style={{ fontWeight: 'bold', fontSize: 18, marginBottom: 16 }}>Edit Service</Text>
-                        <TextInput
-                            label="Service name"
-                            value={editName}
-                            onChangeText={setEditName}
-                            style={{ marginBottom: 12 }}
-                        />
-                        <TextInput
-                            label="Price"
-                            value={editPrice}
-                            onChangeText={setEditPrice}
-                            keyboardType="numeric"
-                            style={{ marginBottom: 20 }}
-                        />
-                        <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                            <Button mode="contained" onPress={handleEdit} loading={loading} disabled={loading} style={styles.editBtn}>Save</Button>
-                            <Button mode="outlined" onPress={() => setEditModal(false)} disabled={loading}>Cancel</Button>
+                <Modal
+                    visible={editModal}
+                    transparent
+                    animationType="slide"
+                    onRequestClose={() => setEditModal(false)}
+                >
+                    <View style={styles.modalBg}>
+                        <View style={styles.modalContent}>
+                            <Text style={{ fontWeight: 'bold', fontSize: 18, marginBottom: 16 }}>Edit Service</Text>
+                            <TextInput
+                                label="Service name"
+                                value={editName}
+                                onChangeText={setEditName}
+                                style={{ marginBottom: 12 }}
+                            />
+                            <TextInput
+                                label="Price"
+                                value={editPrice}
+                                onChangeText={setEditPrice}
+                                keyboardType="numeric"
+                                style={{ marginBottom: 20 }}
+                            />
+                            <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                                <Button mode="contained" onPress={handleEdit} loading={loading} disabled={loading} style={styles.editBtn}>Save</Button>
+                                <Button mode="outlined" onPress={() => setEditModal(false)} disabled={loading}>Cancel</Button>
+                            </View>
                         </View>
                     </View>
-                </View>
-            </Modal>
-        </View>
+                </Modal>
+            </View>
+        </>
     );
 };
 

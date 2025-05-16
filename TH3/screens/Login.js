@@ -62,6 +62,16 @@ const Login = ({ navigation }) => {
         <Button mode="contained" style={styles.loginButton} labelStyle={styles.loginButtonText} onPress={handleLogin}>
             Login
         </Button>
+
+        <View style={styles.registerContainer}>
+            <Text style={styles.registerText}>Don't have an account? </Text>
+            <Text 
+                style={styles.registerLink}
+                onPress={() => navigation.navigate('Register')}
+            >
+                Register now
+            </Text>
+        </View>
         </View>
     )
 }
@@ -95,6 +105,20 @@ const styles = StyleSheet.create({
     loginButtonText: {
         fontSize: 16,
         fontWeight: "bold",
+    },
+    registerContainer: {
+        flexDirection: 'row',
+        justifyContent: 'center',
+        marginTop: 20,
+    },
+    registerText: {
+        fontSize: 14,
+        color: '#666',
+    },
+    registerLink: {
+        fontSize: 14,
+        color: '#f5586c',
+        fontWeight: 'bold',
     },
 })
 

@@ -4,6 +4,12 @@ import auth from "@react-native-firebase/auth";
 import { useEffect } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import Router from "./routers/Router";
+import { Provider as PaperProvider } from 'react-native-paper';
+import { createStackNavigator } from '@react-navigation/stack';
+import Services from './screensUser/Services';
+import ServiceDetail from './screensUser/ServiceDetail';
+
+const Stack = createStackNavigator();
 
 const App = () => {
     const USERS = firestore().collection("USERS");
@@ -38,11 +44,13 @@ const App = () => {
     }, []);
 
     return (
-        <MyContextControllerProvider>
-            <NavigationContainer>
-                <Router />
-            </NavigationContainer>
-        </MyContextControllerProvider>
+        <PaperProvider>
+            <MyContextControllerProvider>
+                <NavigationContainer>
+                    <Router />
+                </NavigationContainer>
+            </MyContextControllerProvider>
+        </PaperProvider>
     );
 };
 

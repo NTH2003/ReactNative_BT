@@ -1,8 +1,6 @@
-"use client"
-
 import { useState } from "react"
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, SafeAreaView } from "react-native"
-import { useMyContextController, login } from "../store"
+import { useMyContextController, login } from "../store/index"
 
 const Login = ({ navigation }) => {
   const [email, setEmail] = useState("")
